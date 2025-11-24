@@ -5,12 +5,48 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
   moduleFormat = "cjs"
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  email          String   @unique
+  favouriteSongs Song[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+enum Genre {
+  rap
+  rock
+  classical
+  pop
+  jazz
+}
+
+model Song {
+  id           Int      @id @default(autoincrement())
+  title        String
+  lenght       Int // in seconds
+  genre        Genre
+  album        Album?   @relation(fields: [albumID], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  albumID      Int?
+  favouritedBy User[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Album {
+  id        Int      @id @default(autoincrement())
+  title     String
+  songs     Song[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
