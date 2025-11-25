@@ -39,6 +39,12 @@ export class AlbumsController {
     return this.albumsService.addSong(+albumid, +songid);
   }
 
+  // :albumid/removeSong/:songid
+  @Delete(':albumid/removeSong/:songid')
+  removeSong(@Param('albumid') albumid: string, @Param('songid') songid: string) {
+    return this.albumsService.removeSong(+albumid, +songid);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAlbumDto: UpdateAlbumDto) {
     return this.albumsService.update(+id, updateAlbumDto);

@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { SongsService } from './songs.service';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
-import { title } from 'process';
 
 @Controller('songs')
 export class SongsController {
@@ -13,6 +12,11 @@ export class SongsController {
     return this.songsService.create(createSongDto);
   }
 
+  @Get('longest')
+  getLongest(@Query('top') top: string = '3') {
+    return this.songsService.getLongest(+top);
+  }
+  
   // URl:/songs?start=12&count=10
   @Get()
   findAll(
@@ -30,7 +34,7 @@ export class SongsController {
   findOne(@Param('id') id: string) {
     return this.songsService.findOne(+id);
   }
-
+  
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateSongDto: UpdateSongDto) {
     return this.songsService.update(+id, updateSongDto);

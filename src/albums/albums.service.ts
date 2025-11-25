@@ -28,6 +28,21 @@ export class AlbumsService {
     });
   }
 
+  removeSong(albumid: number, songid: number) {
+    return this.db.album.update({
+      where: {
+        id: albumid
+      },
+      data: {
+        songs: {
+          disconnect: {
+            id: songid
+          }
+        }
+      }
+    });
+  }
+
   findAll() {
     return `This action returns all albums`;
   }

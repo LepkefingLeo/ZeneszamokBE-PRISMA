@@ -31,8 +31,28 @@ export class SongsService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} song`;
+    return this.db.song.findUniqueOrThrow({
+      where: {
+        id
+      },
+      include: {
+        album: {
+          omit: {
+            id: true
+          }
+        }
+      }
+    });
   }
+
+  getLongest(top: number) {
+  return this.db.song.findMany({
+    orderBy: {
+      lenght: 'desc'
+    },
+    take: top
+  });
+}
 
   update(id: number, updateSongDto: UpdateSongDto) {
     return `This action updates a #${id} song`;
