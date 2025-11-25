@@ -5,6 +5,8 @@ import { UpdateAlbumDto } from './dto/update-album.dto';
 
 // Létrehozás
 // ID alapján lekérdezés
+// - Összes zeneszám adata
+// - Az album össz hossza
 // Zeneszám albumhoz hozzáadás
 
 @Controller('albums')
@@ -22,8 +24,13 @@ export class AlbumsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.albumsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const album =  await this.albumsService.findOne(+id);
+    const lenght = await this.albumsService.getAlbumLength(+id);
+    return {
+      ...album,
+      lenght,
+    };
   }
 
   // :albumid/addSong/:songid

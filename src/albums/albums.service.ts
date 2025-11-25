@@ -24,9 +24,6 @@ export class AlbumsService {
             id: songid
           }
         }
-      },
-      include: {
-        songs: true
       }
     });
   }
@@ -36,7 +33,29 @@ export class AlbumsService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} album`;
+    return this.db.album.findUniqueOrThrow({
+      where: {
+        id
+      },
+      include: {
+        songs: {
+          omit: {
+            albumID: true
+          }
+        }
+      }
+    });
+  }
+
+  async getAlbumLength(id: number): Promise<number|null> {
+    return (await this.db.song.aggregate({
+      _sum: {
+        lenght: true
+      },
+      where: {
+        albumID: id
+      }
+    }))._sum.lenght
   }
 
   update(id: number, updateAlbumDto: UpdateAlbumDto) {
