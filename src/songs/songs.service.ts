@@ -45,7 +45,7 @@ export class SongsService {
     });
   }
 
-  getLongest(top: number) {
+  getLongest(top: number = 3) {
   return this.db.song.findMany({
     orderBy: {
       lenght: 'desc'
